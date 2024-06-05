@@ -1,0 +1,34 @@
+extends ../layouts/master
+
+block content
+    div.content-header
+        div.container-fluid
+            div.row.mb-2
+                div.col-sm-6
+                    h1.m-0 Create Kartu Keluarga
+                div.col-sm-6
+                    ol.breadcrumb.float-sm-right
+                        li.breadcrumb-item
+                            a(href="#") Dashboard
+                        li.breadcrumb-item
+                            a(href="#") Kartu Keluarga Page
+                        li.breadcrumb-item.active Kartu Keluarga New Data
+    div.content
+        div.container-fluid
+            div.card
+                div.card-body
+                    form(method="POST" action="/fam-card/store")
+                        div.form-group
+                            label(for="kk-id") ID
+                            input.form-control(type="text",name="id", id="kk-id", placeholder="kk-id", required, autofocus="true" maxlength="15")
+                        div.form-group
+                            label(for="nama-kk") Nama
+                            input.form-control(type="text",name="kepala_keluarga", id="name-kk", placeholder="Contoh: John Doe", required, autofocus="false" maxlength="100")
+
+                        button.btn.btn-primary(type="submit") Submit
+
+
+
+block add-js
+
+block add-css
