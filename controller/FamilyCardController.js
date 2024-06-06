@@ -1,58 +1,64 @@
-const FamilyCard = require('../models/familyCard')
+const FamilyCard = require('../models/familyCard');
 
 const index = (req, res) => {
-    const success = req.session.success || ''
-    delete req.session.success;
-    new FamilyCard().all((familyCards) => {
-        res.render('family_card/index', {
-            familyCards: familyCards,
-            success: success
-        })
-    })
-}
+    new FamilyCard().all((err, familyCards) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+        res.status(200).json({ success: true, data: familyCards });
+    });
+};
 
 const create = (req, res) => {
-    res.render('family_card/create')
-}
+    res.status(200).json({ success: true, message: 'Create page' });
+};
 
 const store = (req, res) => {
     const familyCard = {
         id: req.body.id,
         kepala_keluarga: req.body.kepala_keluarga
-    }
+    };
 
+    new FamilyCard().save(familyCard, (err, result) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+        res.status(201).json({ success: true, message: 'Data berhasil ditambah' });
+    });
+};
 
-    new FamilyCard().save(familyCard, (result) => {
-        req.session.success = "Data berhasil ditambah"
-        res.redirect('/fam-card')
-    })
-}
 const edit = (req, res) => {
-    const id = req.params.id
-    new FamilyCard().edit(id, (familyCard) => {
-        res.render('family_card/edit', {
-            familyCard: familyCard
-        })
-    })
-}
+    const id = req.params.id;
+    new FamilyCard().edit(id, (err, familyCard) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+        res.status(200).json({ success: true, data: familyCard });
+    });
+};
 
 const update = (req, res) => {
     const familyCard = {
         id: req.body.id,
         kepala_keluarga: req.body.kepala_keluarga
-    }
-    new FamilyCard().update(familyCard, (result) => {
-        req.session.success = "Data berhasil diubah"
-        res.redirect('/fam-card')
-    })
-}
+    };
+
+    new FamilyCard().update(familyCard, (err, result) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+        res.status(200).json({ success: true, message: 'Data berhasil diubah' });
+    });
+};
+
 const destroy = (req, res) => {
-    const id = req.params.id
-    new FamilyCard().delete(id, (result) => {
-        req.session.success = "Data berhasil dihapus"
-        res.redirect('/fam-card')
-    })
-}
+    const id = req.params.id;
+    new FamilyCard().delete(id, (err, result) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+        res.status(200).json({ success: true, message: 'Data berhasil dihapus' });
+    });
+};
 
-
-module.exports = { index, create, store, edit, update, destroy }
+module.exports = { index, create, store, edit, update, destroy };

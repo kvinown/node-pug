@@ -18,6 +18,6 @@ app.use(session({
 }));
 app.use(router)
 
-app.listen(8000, () => {
-    console.log('Server run at port 8000')
+app.listen(8888, () => {
+    console.log('Server run at port 8888')
 })
