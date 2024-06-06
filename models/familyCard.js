@@ -6,7 +6,7 @@ class FamilyCard {
         this.db = mysql.createConnection(config.db)
         this.db.connect(err => {
             if (err) throw err
-            console.log('MySQL Connection is Running')
+            console.log('MySQL Connect to Family Card')
         })
     }
 
@@ -27,10 +27,14 @@ class FamilyCard {
 
     save(familyCardData, callback) {
         const query = "INSERT INTO kartu_keluarga (id, kepala_keluarga) VALUES (?, ?)"
-        this.db.query(query, [familyCardData.id, familyCardData.kepala_keluarga], (err, result, field) => {
+        this.db.query(query, [
+            familyCardData.id,
+            familyCardData.kepala_keluarga
+        ], (err, result, field) => {
             if (err) {
                 return callback(err)
             }
+            this.db.end()
             callback(result)
         })
     }
@@ -46,19 +50,25 @@ class FamilyCard {
                     id: result[0].id,
                     kepala_keluarga: result[0].kepala_keluarga
                 }
+                this.db.end()
                 callback(familyCard)
             } else {
+                this.db.end()
                 callback(new Error("Family card not found"))
             }
         })
     }
 
-    update(familyCard, callback) {
+    update(familyCardData, callback) {
         const query = "UPDATE kartu_keluarga SET kepala_keluarga = ? WHERE id = ?"
-        this.db.query(query, [familyCard.kepala_keluarga, familyCard.id], (err, result) => {
+        this.db.query(query, [
+            familyCardData.kepala_keluarga,
+            familyCardData.id
+        ], (err, result) => {
             if (err) {
                 return callback(err)
             }
+            this.db.end()
             callback(result)
         })
     }
@@ -69,6 +79,7 @@ class FamilyCard {
             if (err) {
                 return callback(err)
             }
+            this.db.end()
             callback(result)
         })
     }

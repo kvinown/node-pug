@@ -1,8 +1,8 @@
 const FamilyCard = require('../models/familyCard')
 
 const index = (req, res) => {
-    const success = req.session.success || '';
-    delete req.session.success; // Hapus data sesi setelah digunakan
+    const success = req.session.success || ''
+    delete req.session.success;
     new FamilyCard().all((familyCards) => {
         res.render('family_card/index', {
             familyCards: familyCards,
@@ -30,7 +30,9 @@ const store = (req, res) => {
 const edit = (req, res) => {
     const id = req.params.id
     new FamilyCard().edit(id, (familyCard) => {
-        res.render('family_card/edit', { familyCard: familyCard })
+        res.render('family_card/edit', {
+            familyCard: familyCard
+        })
     })
 }
 
@@ -46,7 +48,7 @@ const update = (req, res) => {
 }
 const destroy = (req, res) => {
     const id = req.params.id
-    new FamilyCard().delete(id, (familyCard) => {
+    new FamilyCard().delete(id, (result) => {
         req.session.success = "Data berhasil dihapus"
         res.redirect('/fam-card')
     })

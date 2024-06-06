@@ -1,0 +1,73 @@
+extends ../layouts/master
+
+block content
+    div.content-header
+        div.container-fluid
+            div.row.mb-2
+                div.col-sm-6
+                    h1.m-0 Kartu Keluarga Page
+                div.col-sm-6
+                    ol.breadcrumb.float-sm-right
+                        li.breadcrumb-item
+                            a(href="/") Dashboard
+                        li.breadcrumb-item.active Kartu Keluarga Page
+    div.content
+        div.container-fluid
+            div.card
+                div.card-header
+                    a.btn.btn-success.ml-1(href="/citizen/create") Tambah Kartu Keluarga
+                div.card-body
+                    if success
+                        div.position-fixed.top-10.start-50.translate-middle(style="z-index:11")
+                            div#toast.toast.align-items-center.text-white.bg-success(data-bs-autohide="true", role="alert", aria-live="assertive", aria-atomic="true")
+                                div.d-flex
+                                    div.toast-body= success
+                                    button.btn-close.btn-close-white.me-2.m-auto(type="button", data-bs-dismiss="toast", aria-label="Close")
+                    div.table-responsive
+                        table.table.table-striped(id="table-fam-card")
+                            thead
+                                tr
+                                    th Nik
+                                    th Nama
+                                    th Alamat
+                                    th Tanggal Lahir
+                                    th Golongan Darah
+                                    th Agama
+                                    th Status
+                                    th ID Kartu Keluarga
+                                    th Nama Kepala Keluarga
+                                    th Edit
+                                    th Delete
+                            tbody
+                                each citizen in citizens
+                                    tr
+                                        td #{citizen.nik}
+                                        td #{citizen.nama}
+                                        td #{citizen.alamat}
+                                        td #{citizen.tgl_lahir}
+                                        td #{citizen.gol_darah}
+                                        td #{citizen.agama}
+                                        td #{citizen.status}
+                                        td #{citizen.kartu_keluarga_id}
+                                        td #{citizen.kepala_keluarga}
+                                        td
+                                            a.btn.btn-warning(role="button", href=`/citizen/edit/${citizen.nik}`)
+                                                i.fas.fa-edit
+                                        td
+                                            a.btn.btn-danger(role="button", href=`/citizen/delete/${citizen.nik}`, onclick="return confirmDelete()")
+                                                i.fas.fa-trash
+
+block add-js
+    script.
+        function confirmDelete() {
+            return confirm("Apakah Anda yakin ingin menghapus data ini?");
+        }
+        // Dapatkan elemen toast
+        var toastEl = document.getElementById('toast');
+        // Buat objek toast dari elemen toast
+        var toast = new bootstrap.Toast(toastEl, { autohide: true, delay: 2000 });
+        // Tampilkan toast jika ada success message
+        if ('#{success}') {
+            toast.show();
+        }
+block add-css
