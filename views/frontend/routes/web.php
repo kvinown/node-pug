@@ -20,3 +20,8 @@ Route::delete('/fam-card/delete/{id}', [FamilyCardController::class, 'destroy'])
 
 // Citizen
 Route::get('/citizen', [CitizenController::class, 'index'])->name('citizen');
+Route::get('/citizen/create', [CitizenController::class, 'create'])->name('citizen.create');
+Route::post('/citizen/store', [CitizenController::class, 'store'])->name('citizen.store');
+Route::get('/citizen/edit/{nik}', [CitizenController::class, 'edit'])->name('citizen.edit');
+Route::post('/citizen/update', [CitizenController::class, 'update'])->name('citizen.update');
+Route::get('/citizen/delete/{nik}', [CitizenController::class, 'destroy'])->name('citizen.delete');

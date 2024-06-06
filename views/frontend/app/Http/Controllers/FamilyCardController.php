@@ -36,14 +36,9 @@ class FamilyCardController extends Controller
         // Debugging the request data
         // dd($request->all());
 
-        try {
-            $response = $this->client->request('POST', '/api/fam-card/store', [
+        $response = $this->client->request('POST', '/api/fam-card/store', [
                 'json' => $request->all()
-            ]);
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            // Handle the exception if the request fails
-            return redirect()->back()->with('error', 'Failed to send data to API');
-        }
+        ]);
 
         return redirect(route('fam-card'))->with('success', 'Data berhasil ditambah');
     }
@@ -54,41 +49,26 @@ class FamilyCardController extends Controller
 
     public function edit($id)
     {
-//        dd($id);
-        try {
-            $response = $this->client->request('GET', "/api/fam-card/edit/{$id}");
-            $familyCard = json_decode($response->getBody()->getContents());
-            $familyCardData = $familyCard->data;
+        $response = $this->client->request('GET', "/api/fam-card/edit/{$id}");
+        $familyCard = json_decode($response->getBody()->getContents());
+        $familyCardData = $familyCard->data;
 
-            return view('family_card.edit', compact('familyCardData'));
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to fetch data from API');
-        }
+        return view('family_card.edit', compact('familyCardData'));
     }
 
     public function update(Request $request)
     {
-        try {
-            $response = $this->client->request('POST', "/api/fam-card/update", [
-                'json' => $request->all()
-            ]);
+        $response = $this->client->request('POST', "/api/fam-card/update", [
+            'json' => $request->all()
+        ]);
 
-            return redirect('/fam-card')->with('success', 'Data berhasil diubah');
-        } catch (\Exception $e) {
-            // Tangani kesalahan jika gagal mengubah data melalui API
-            return back()->with('error', 'Failed to update data through API');
-        }
+        return redirect(route('fam-card'))->with('success', 'Data berhasil diubah');
     }
 
     public function destroy($id)
     {
-        try {
-            $response = $this->client->request('GET', "/api/fam-card/delete/{$id}");
+        $response = $this->client->request('GET', "/api/fam-card/delete/{$id}");
 
-            return redirect('/fam-card')->with('success', 'Data berhasil dihapus');
-        } catch (\Exception $e) {
-            // Tangani kesalahan jika gagal menghapus data melalui API
-            return back()->with('error', 'Failed to delete data through API');
-        }
+        return redirect(route('fam-card'))->with('success', 'Data berhasil dihapus');
     }
 }
