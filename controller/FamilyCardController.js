@@ -3,9 +3,15 @@ const FamilyCard = require('../models/familyCard');
 const index = (req, res) => {
     new FamilyCard().all((err, familyCards) => {
         if (err) {
-            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+            return res.status(500).json({
+                success: false,
+                message: 'Internal Server Error'
+            });
         }
-        res.status(200).json({ success: true, data: familyCards });
+        res.status(200).json({
+            success: true,
+            data: familyCards
+        });
     });
 };
 

@@ -16,12 +16,12 @@ router.get('/api/fam-card/create', familyCardController.create)
 router.get('/api/fam-card', familyCardController.index)
 
 // Citizen
-router.get('/citizen/delete/:nik', citizenController.destroy);
-router.post('/citizen/update', citizenController.update);
-router.get('/citizen/edit/:nik', citizenController.edit);
-router.post('/citizen/store', citizenController.store);
-router.get('/citizen/create', citizenController.create);
-router.get('/citizen', citizenController.index);
+router.get('/api/citizen/delete/:nik', citizenController.destroy);
+router.post('/api/citizen/update', citizenController.update);
+router.get('/api/citizen/edit/:nik', citizenController.edit);
+router.post('/api/citizen/store', citizenController.store);
+router.get('/api/citizen/create', citizenController.create);
+router.get('/api/citizen', citizenController.index);
 
 
 router.get('/home', (req, res) => {

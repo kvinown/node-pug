@@ -40,7 +40,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="" class="nav-link">
+            <a href="{{route('citizen')}}" class="nav-link">
               <p>
                 Penduduk
               </p>

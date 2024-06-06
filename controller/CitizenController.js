@@ -1,27 +1,23 @@
-const Citizen = require('../models/citizen')
-const FamilyCard = require('../models/familyCard')
+const Citizen = require('../models/citizen');
 
 const index = (req, res) => {
-    const success = req.session.success || '';
-    delete req.session.success;
-
-    new Citizen().all((citizens) => {
-        res.render('citizen/index', {
-            citizens: citizens,
-            success: success,
+    new Citizen().all((err, citizens) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                message: 'Internal Server Error'
+            });
+        }
+        res.status(200).json({
+            success: true,
+            data: citizens
         });
     });
 };
 
-
 const create = (req, res) => {
-    new FamilyCard().all((familyCards) => {
-        res.render('citizen/create', {
-            familyCards: familyCards
-        })
-    })
-}
-
+    res.status(200).json({ success: true, message: 'Create page' });
+};
 
 const store = (req, res) => {
     const citizen = {
@@ -31,50 +27,56 @@ const store = (req, res) => {
         tgl_lahir: req.body.tgl_lahir,
         gol_darah: req.body.gol_darah,
         agama: req.body.agama,
-        status: req.body.status
+        status: req.body.status,
+        kartu_keluarga_id: req.body.kartu_keluarga_id
     };
 
-    new Citizen().save(citizen, (result) => {
-        req.session.success = "Data Berhasil ditambahkan"; // Menggunakan req.session, bukan res.session
-        res.redirect('/citizen');
+    new Citizen().save(citizen, (err, result) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+        res.status(201).json({ success: true, message: 'Data berhasil ditambah' });
     });
 };
 
 const edit = (req, res) => {
     const nik = req.params.nik;
     new Citizen().edit(nik, (err, citizen) => {
-        if (err || !citizen) {
-            return res.redirect('/citizen');
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
         }
-
-        new FamilyCard().all((familyCards) => {
-            res.render('citizen/edit', {
-                citizen: citizen,
-                familyCards: familyCards
-            });
-        });
+        res.status(200).json({ success: true, data: citizen });
     });
 };
 
 const update = (req, res) => {
     const citizen = {
+        nik: req.params.nik,
         nama: req.body.nama,
         alamat: req.body.alamat,
         tgl_lahir: req.body.tgl_lahir,
         gol_darah: req.body.gol_darah,
         agama: req.body.agama,
-        status: req.body.status
-    }
-    new Citizen().update(citizen, (result) => {
-        req.session.success = "Data berhasil diubah"
-        res.redirect('/citizen')
-    })
-}
+        status: req.body.status,
+        kartu_keluarga_id: req.body.kartu_keluarga_id
+    };
+
+    new Citizen().update(citizen, (err, result) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+        res.status(200).json({ success: true, message: 'Data berhasil diubah' });
+    });
+};
+
 const destroy = (req, res) => {
-    const nik = req.params.nik
-    new Citizen().delete(nik, (result) => {
-        req.session.success = "Data berhasil dihapus"
-        res.redirect('/citizen')
-    })
-}
-module.exports = { index, create, store, edit, update, destroy }
+    const nik = req.params.nik;
+    new Citizen().delete(nik, (err, result) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+        res.status(200).json({ success: true, message: 'Data berhasil dihapus' });
+    });
+};
+
+module.exports = { index, create, store, edit, update, destroy };

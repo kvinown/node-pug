@@ -22,8 +22,6 @@ class FamilyCardController extends Controller
         if ($statusCode == 200) {
             $familyCards = json_decode($response->getBody()->getContents());
             return view('family_card.index', compact('familyCards'));
-        } else {
-            return back()->with('error', 'Failed to fetch data from API');
         }
     }
 
