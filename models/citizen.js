@@ -80,6 +80,7 @@ class Citizen {
         });
     }
 
+
     update(citizenData, callback) {
         const query = "UPDATE penduduk SET nama = ?, alamat = ?, tgl_lahir = ?, gol_darah = ?, agama = ?, status = ?, kartu_keluarga_id = ? WHERE nik = ?";
         this.db.query(query, [

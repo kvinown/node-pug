@@ -22,6 +22,7 @@ const create = (req, res) => {
     })
 }
 
+
 const store = (req, res) => {
     const citizen = {
         nik: req.body.nik,
@@ -31,25 +32,30 @@ const store = (req, res) => {
         gol_darah: req.body.gol_darah,
         agama: req.body.agama,
         status: req.body.status
-    }
+    };
 
     new Citizen().save(citizen, (result) => {
-        res.session.success = "Data Berhasil ditambahkan"
-        res.redirect('citizen')
-    })
-}
+        req.session.success = "Data Berhasil ditambahkan"; // Menggunakan req.session, bukan res.session
+        res.redirect('/citizen');
+    });
+};
 
 const edit = (req, res) => {
-    const nik = req.params.nik
-    new Citizen().edit(nik, (citizen) => {
-        new FamilyCard().all((familyCard) => {
-            res.render('familiy_card/edit', {
-                citizen : citizen,
-                familyCard : familyCard
-            })
-        })
-    })
-}
+    const nik = req.params.nik;
+    new Citizen().edit(nik, (err, citizen) => {
+        if (err || !citizen) {
+            return res.redirect('/citizen');
+        }
+
+        new FamilyCard().all((familyCards) => {
+            res.render('citizen/edit', {
+                citizen: citizen,
+                familyCards: familyCards
+            });
+        });
+    });
+};
+
 const update = (req, res) => {
     const citizen = {
         nama: req.body.nama,
