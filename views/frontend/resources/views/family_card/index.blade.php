@@ -18,8 +18,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @if (!empty($familyCards))
-                            @foreach ($familyCards->data as $familyCard)
+                        @if (!empty($familyCardDatas))
+                            @foreach ($familyCardDatas as $familyCard)
                                 <tr>
                                     <td>{{ $familyCard->id }}</td>
                                     <td>{{ $familyCard->kepala_keluarga }}</td>

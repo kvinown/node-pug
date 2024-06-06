@@ -21,7 +21,8 @@ class FamilyCardController extends Controller
 
         if ($statusCode == 200) {
             $familyCards = json_decode($response->getBody()->getContents());
-            return view('family_card.index', compact('familyCards'));
+            $familyCardDatas = $familyCards->data;
+            return view('family_card.index', compact('familyCardDatas'));
         }
     }
 
@@ -32,35 +33,43 @@ class FamilyCardController extends Controller
 
     public function store(Request $request)
     {
+        // Debugging the request data
+        // dd($request->all());
+
         try {
-            $response = $this->client->request('POST', '/api/fam-card', [
+            $response = $this->client->request('POST', '/api/fam-card/store', [
                 'json' => $request->all()
             ]);
-
-            return redirect('/fam-card')->with('success', 'Data berhasil ditambah');
-        } catch (\Exception $e) {
-            // Tangani kesalahan jika gagal menyimpan data melalui API
-            return back()->with('error', 'Failed to store data through API');
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            // Handle the exception if the request fails
+            return redirect()->back()->with('error', 'Failed to send data to API');
         }
+
+        return redirect(route('fam-card'))->with('success', 'Data berhasil ditambah');
     }
+
+
+
+
 
     public function edit($id)
     {
+//        dd($id);
         try {
-            $response = $this->client->request('GET', "/api/fam-card/{$id}");
+            $response = $this->client->request('GET', "/api/fam-card/edit/{$id}");
             $familyCard = json_decode($response->getBody()->getContents());
+            $familyCardData = $familyCard->data;
 
-            return view('family_card.edit', compact('familyCard'));
+            return view('family_card.edit', compact('familyCardData'));
         } catch (\Exception $e) {
-            // Tangani kesalahan jika gagal mengambil data dari API
             return back()->with('error', 'Failed to fetch data from API');
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         try {
-            $response = $this->client->request('PUT', "/api/fam-card/{$id}", [
+            $response = $this->client->request('POST', "/api/fam-card/update", [
                 'json' => $request->all()
             ]);
 
@@ -74,7 +83,7 @@ class FamilyCardController extends Controller
     public function destroy($id)
     {
         try {
-            $response = $this->client->request('DELETE', "/api/fam-card/{$id}");
+            $response = $this->client->request('GET', "/api/fam-card/delete/{$id}");
 
             return redirect('/fam-card')->with('success', 'Data berhasil dihapus');
         } catch (\Exception $e) {

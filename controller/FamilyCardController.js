@@ -20,20 +20,26 @@ const create = (req, res) => {
 };
 
 const store = (req, res) => {
+    console.log("Received data for storing:", req.body);
     const familyCard = {
         id: req.body.id,
         kepala_keluarga: req.body.kepala_keluarga
     };
 
+    console.log("Received data for storing:", familyCard);
+
     new FamilyCard().save(familyCard, (err, result) => {
         if (err) {
-            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+            console.error("Error occurred while saving family card:", err);
+            return res.status(500).json({ success: false, message: 'Internal Server Error', error: err.message });
         }
-        res.status(201).json({ success: true, message: 'Data berhasil ditambah' });
+        res.status(201).json({ success: true, message: 'Data berhasil ditambah', data: result });
     });
 };
 
+
 const edit = (req, res) => {
+    console.log("Received edit request:", req.params)
     const id = req.params.id;
     new FamilyCard().edit(id, (err, familyCard) => {
         if (err) {

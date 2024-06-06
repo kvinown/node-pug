@@ -8,9 +8,9 @@ const citizenController = require('../controller/CitizenController')
 router.use(express.static('public'))
 
 // Family Card
-router.get('/api/fam-card/delete/:id', familyCardController.destroy);
-router.post('/api/fam-card/update', familyCardController.update);
-router.get('/api/fam-card/edit/:id', familyCardController.edit);
+router.get('/api/fam-card/delete/:id', familyCardController.destroy)
+router.post('/api/fam-card/update', familyCardController.update)
+router.get('/api/fam-card/edit/:id', familyCardController.edit)
 router.post('/api/fam-card/store', familyCardController.store)
 router.get('/api/fam-card/create', familyCardController.create)
 router.get('/api/fam-card', familyCardController.index)
