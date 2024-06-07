@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="card">
                     <h5 class="card-title">Data Penduduk</h5>
-                    <table id="table-kk" width="100%">
+                    <table id="table-kk" width="100%" class="table table-bordered">
                         <thead>
                         <tr>
                             <th>NIK</th>

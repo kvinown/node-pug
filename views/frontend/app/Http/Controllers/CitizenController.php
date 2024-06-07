@@ -42,11 +42,15 @@ class CitizenController extends Controller
     }
     public function edit($nik)
     {
-        $response = $this->client->request('GET', "/api/citizen/edit/{$nik}");
-        $citizen = json_decode($response->getBody()->getContents());
+        $responseCit = $this->client->request('GET', "/api/citizen/edit/{$nik}");
+        $citizen = json_decode($responseCit->getBody()->getContents());
         $citizenData = $citizen->data;
 
-        return view('citizen.edit', compact('citizenData'));
+        $responseFam =  $this->client->request('GET', '/api/fam-card');
+        $familyCards = json_decode($responseFam->getBody()->getContents());
+        $familyCardDatas = $familyCards->data;
+
+        return view('citizen.edit', compact('citizenData', 'familyCardDatas'));
     }
     public function update(Request $request)
     {

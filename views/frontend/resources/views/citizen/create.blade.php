@@ -3,7 +3,7 @@
 @section('web-content')
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        @include('layouts.pend_header')
+        @include('layouts.pend_header')0
         <!-- /.content-header -->
 
         <!-- Main content -->
