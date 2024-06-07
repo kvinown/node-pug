@@ -2,9 +2,9 @@
 
 @section('web-content')
     <div class="content-wrapper">
-{{--        @include('layouts.kk_header')--}}
+                @include('layouts.pend_header')
         <div class="content">
-            <a href="{{ route('fam-card.create') }}" class="btn btn-success ml-1">Tambah Penduduk</a>
+            <a href="{{ route('citizen.create') }}" class="btn btn-success ml-1">Tambah Penduduk</a>
             <div class="container-fluid">
                 <div class="card">
                     <h5 class="card-title">Data Penduduk</h5>
@@ -25,8 +25,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @if (!empty($citizens))
-                            @foreach ($citizens->data as $citizen)
+                        @if (!empty($citizenDatas))
+                            @foreach ($citizenDatas as $citizen)
                                 <tr>
                                     <td>{{ $citizen->nik }}</td>
                                     <td>{{ $citizen->nama }}</td>
@@ -38,24 +38,24 @@
                                     <td>{{ $citizen->kartu_keluarga_id }}</td>
                                     <td>{{ $citizen->kepala_keluarga }}</td>
                                     <td>
-                                        <a href="" class="btn btn-warning" role="button">
+                                        <a href="{{ route('citizen.edit', $citizen->nik) }}" class="btn btn-warning" role="button">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     </td>
                                     <td>
-                                        <form action="" method="POST">
+                                        <form action="{{ route('citizen.delete', $citizen->nik) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                         </form>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="4">No data available</td>
+                                <td colspan="11">No data available</td>
                             </tr>
                         @endif
                         </tbody>

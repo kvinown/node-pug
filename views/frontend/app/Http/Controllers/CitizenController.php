@@ -21,11 +21,17 @@ class CitizenController extends Controller
 
         if ($statusCode == 200) {
             $citizens = json_decode($response->getBody()->getContents());
-            return view('citizen.index', compact('citizens'));
+            $citizenDatas = $citizens->data;
+            return view('citizen.index', compact('citizenDatas'));
         }
     }
     public function create(){
-        return view('citizen.create');
+        $response = $this->client->request('GET', '/api/fam-card');
+
+        $familyCards = json_decode($response->getBody()->getContents());
+        $familyCardDatas = $familyCards->data;
+//        dd($familyCardDatas);
+        return view('citizen.create', compact('familyCardDatas'));
     }
     public function store(Request $request)
     {

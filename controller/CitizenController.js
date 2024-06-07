@@ -20,6 +20,7 @@ const create = (req, res) => {
 };
 
 const store = (req, res) => {
+    console.log(req.body);
     const citizen = {
         nik: req.body.nik,
         nama: req.body.nama,
