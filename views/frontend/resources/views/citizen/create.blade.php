@@ -15,7 +15,7 @@
                     </div>
                 @endif
               <div class="card p-4">
-                  <form method="POST" action="{{ route('citizen.store') }}">
+                  <form method="POST" action="{{ route('citizen.store') }}" enctype="multipart/form-data">
                       @csrf
                       <div class="form-group">
                           <label for="nik">NIK</label>
@@ -61,6 +61,20 @@
                               @endforeach
                           </select>
                       </div>
+{{--                      <div class="form-group">--}}
+{{--                          <label for="profile_picture">Kartu Keluarga ID</label>--}}
+{{--                          <input type="file" class="form-control" id="profile_picture" placeholder="" required name="profile_picture">--}}
+{{--                          <img src="" alt="" id="blah" style="max-width: 100px; max-height: 100px;">--}}
+{{--                          <script>--}}
+{{--                              document.getElementById('profile_picture').onchange = evt => {--}}
+{{--                                  const [file] = profile_picture.files;--}}
+{{--                                  if (file) {--}}
+{{--                                      document.getElementById('blah').src = URL.createObjectURL(file);--}}
+{{--                                  }--}}
+{{--                              };--}}
+{{--                          </script>--}}
+{{--                      </div>--}}
+
                       <button class="btn btn-primary" type="submit">Submit</button>
                   </form>
 

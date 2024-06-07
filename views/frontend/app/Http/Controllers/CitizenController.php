@@ -35,11 +35,34 @@ class CitizenController extends Controller
     }
     public function store(Request $request)
     {
-        $response = $this->client->request('POST', '/api/citizen/store', [
-            'json' => $request->all()
-        ]);
-        return redirect(route('citizen'))->with('success', 'Data Berhasil ditambah');
+        try {
+            $response = $this->client->request('POST', '/api/citizen/store', [
+                'json' => $request->all()
+            ]);
+
+            $responseData = json_decode($response->getBody(), true);
+
+            if ($responseData['success']) {
+                return redirect(route('citizen'))->with('success', 'Data berhasil ditambah');
+            } else {
+                return redirect(route('citizen'))->with('error', 'Terjadi kesalahan saat menambah data');
+            }
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $responseData = json_decode($responseBodyAsString, true);
+
+            // Check if the error is due to a duplicate entry
+            if (isset($responseData['error']) && strpos($responseData['error'], 'ER_DUP_ENTRY') !== false) {
+                return redirect(route('citizen'))->with('error', 'Data penduduk sudah terdaftar, silahkan coba lagi.');
+            }
+
+            return redirect(route('citizen'))->with('error', 'Terjadi kesalahan saat menambah data');
+        } catch (\Exception $e) {
+            return redirect(route('citizen'))->with('error', 'Terjadi kesalahan saat menambah data');
+        }
     }
+
     public function edit($nik)
     {
         $responseCit = $this->client->request('GET', "/api/citizen/edit/{$nik}");

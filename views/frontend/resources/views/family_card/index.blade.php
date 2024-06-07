@@ -8,6 +8,19 @@
             <div class="container-fluid">
                 <div class="card">
                     <h5 class="card-title">Data Kartu Keluarga</h5>
+
+                    <!-- Flash Messages -->
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <table id="table-kk" width="100%" class="table table-bordered">
                         <thead>
                         <tr>
@@ -60,6 +73,8 @@
     <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
-        $('#table-kk').DataTable();
+        $(document).ready(function() {
+            $('#table-kk').DataTable();
+        });
     </script>
 @endsection

@@ -2,17 +2,30 @@
 
 @section('web-content')
     <div class="content-wrapper">
-                @include('layouts.pend_header')
+        @include('layouts.pend_header')
         <div class="content">
             <a href="{{ route('citizen.create') }}" class="btn btn-success ml-1">Tambah Penduduk</a>
             <div class="container-fluid">
                 <div class="card">
                     <h5 class="card-title">Data Penduduk</h5>
+
+                    <!-- Flash Messages -->
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <table id="table-kk" width="100%" class="table table-bordered">
                         <thead>
                         <tr>
                             <th>NIK</th>
-                            <th>Nama </th>
+                            <th>Nama</th>
                             <th>Alamat</th>
                             <th>Tanggal Lahir</th>
                             <th>Golongan Darah</th>
@@ -38,12 +51,14 @@
                                     <td>{{ $citizen->kartu_keluarga_id }}</td>
                                     <td>{{ $citizen->kepala_keluarga }}</td>
                                     <td>
-                                        <a href="{{ route('citizen.edit', $citizen->nik) }}" class="btn btn-warning" role="button">
+                                        <a href="{{ route('citizen.edit', $citizen->nik) }}"
+                                           class="btn btn-warning" role="button">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     </td>
                                     <td>
-                                        <form action="{{ route('citizen.delete', $citizen->nik) }}" method="POST">
+                                        <form action="{{ route('citizen.delete', $citizen->nik) }}"
+                                              method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">
@@ -74,6 +89,8 @@
     <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
-        $('#table-kk').DataTable();
+        $(document).ready(function () {
+            $('#table-kk').DataTable();
+        });
     </script>
 @endsection

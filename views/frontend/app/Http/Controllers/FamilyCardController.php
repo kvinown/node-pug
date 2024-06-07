@@ -33,15 +33,34 @@ class FamilyCardController extends Controller
 
     public function store(Request $request)
     {
-        // Debugging the request data
-        // dd($request->all());
-
-        $response = $this->client->request('POST', '/api/fam-card/store', [
+        try {
+            $response = $this->client->request('POST', '/api/fam-card/store', [
                 'json' => $request->all()
-        ]);
+            ]);
 
-        return redirect(route('fam-card'))->with('success', 'Data berhasil ditambah');
+            $responseData = json_decode($response->getBody(), true);
+
+            if ($responseData['success']) {
+                return redirect(route('fam-card'))->with('success', 'Data berhasil ditambah');
+            } else {
+                return redirect(route('fam-card'))->with('error', 'Terjadi kesalahan saat menambah data');
+            }
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $responseData = json_decode($responseBodyAsString, true);
+
+            // Check if the error is due to a duplicate entry
+            if (isset($responseData['error']) && strpos($responseData['error'], 'ER_DUP_ENTRY') !== false) {
+                return redirect(route('fam-card'))->with('error', 'Nomor Kartu Keluarga sudah terdaftar, silahkan diganti dengan nomor yang lain');
+            }
+
+            return redirect(route('fam-card'))->with('error', 'Terjadi kesalahan saat menambah data');
+        } catch (\Exception $e) {
+            return redirect(route('fam-card'))->with('error', 'Terjadi kesalahan saat menambah data');
+        }
     }
+
 
 
 
