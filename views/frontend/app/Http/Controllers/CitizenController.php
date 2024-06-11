@@ -36,6 +36,12 @@ class CitizenController extends Controller
     public function store(Request $request)
     {
         try {
+            if ($request->hasFile('profile_picture')) {
+                $fileName = time().'.'.$request->profile_picture->extension();
+                $request->profile_picture->move(public_path('uploads'), $fileName);
+                $validatedData['profile_picture'] = $fileName;
+            }
+
             $response = $this->client->request('POST', '/api/citizen/store', [
                 'json' => $request->all()
             ]);

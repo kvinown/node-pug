@@ -23,7 +23,19 @@ class FamilyCard {
             callback(null, familyCards);
         });
     }
-
+    all2 = () => {
+        const query = "SELECT id, kepala_keluarga FROM kartu_keluarga";
+        return new Promise((resolve, reject) => {
+            this.db.query(query, (err, result) => {
+                if (err) reject(err)
+                const familyCards = result.map(row => ({
+                    id: row.id,
+                    kepala_keluarga: row.kepala_keluarga
+                }));
+                resolve(familyCards)
+            })
+        })
+    }
     save(familyCardData, callback) {
         const query = "INSERT INTO kartu_keluarga (id, kepala_keluarga) VALUES (?, ?)";
         this.db.query(query, [familyCardData.id, familyCardData.kepala_keluarga], (err, result) => {

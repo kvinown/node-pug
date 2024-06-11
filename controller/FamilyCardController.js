@@ -15,6 +15,18 @@ const index = (req, res) => {
     });
 };
 
+const index2 = async (req, res) => {
+    try {
+        const familyCard = new FamilyCard()
+        const familyCards = await familyCard.all2()
+        res.json(familyCards)
+    } catch (err) {
+        res.status(500).json({
+            error: err.message
+        })
+    }
+}
+
 const create = (req, res) => {
     res.status(200).json({ success: true, message: 'Create page' });
 };
@@ -73,4 +85,4 @@ const destroy = (req, res) => {
     });
 };
 
-module.exports = { index, create, store, edit, update, destroy };
+module.exports = { index, create, store, edit, update, destroy, index2 };

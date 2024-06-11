@@ -3,6 +3,7 @@ const Citizen = require('../models/citizen');
 const index = (req, res) => {
     new Citizen().all((err, citizens) => {
         if (err) {
+            console.log(err)
             return res.status(500).json({
                 success: false,
                 message: 'Internal Server Error'

@@ -7,6 +7,8 @@ const citizenController = require('../controller/CitizenController')
 
 router.use(express.static('public'))
 
+router.get('/fam-card', familyCardController.index2)
+
 // Family Card
 router.get('/api/fam-card/delete/:id', familyCardController.destroy)
 router.post('/api/fam-card/update', familyCardController.update)

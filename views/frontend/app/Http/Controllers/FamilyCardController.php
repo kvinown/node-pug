@@ -11,7 +11,7 @@ class FamilyCardController extends Controller
 
     public function __construct()
     {
-        $this->client = new Client(['base_uri' => 'http://localhost:8888']); // Ganti URL dengan URL API Node.js Anda
+        $this->client = new Client(['base_uri' => 'http://localhost:8888']);
     }
 
     public function index()
